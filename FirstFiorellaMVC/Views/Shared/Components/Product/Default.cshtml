@@ -1,5 +1,5 @@
 ﻿@{
-    List<Product> products = Model;
+    List<FirstFiorellaMVC.Models.Product> products = Model;
 }
 
 @foreach (var item in products)
@@ -15,7 +15,9 @@
                         <h6>@item.Name</h6>
                     </div>
                     <div class="price">
-                        <span class="text-black-50">Add to cart</span>
+                            <a asp-controller="home" asp-action="AddBasket" asp-route-id="@item.Id">
+                            <span class="text-black-50">Add to cart</span>
+                            </a>
                             @{
                                 if(item.CampaignId == null)
                                 {

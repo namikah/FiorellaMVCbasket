@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Basket";
+    List<BasketViewModel> baskets = Model;
+
+    foreach (var item in baskets)
+    {
+        <h1>@item.Name</h1>
+        <h6>@item.Price</h6>
+        <h6>@item.Count</h6>
+        <h6>@item.Weight</h6>
+    }
+}
+
+
+
