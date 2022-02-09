@@ -19,7 +19,15 @@ namespace FirstFiorellaMVC.ViewModels
 
         public int Count { get; set; } = 1;
 
-        public List<ProductImage> Images { get; set; }
+        public string Image { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
+
+        public int? CampaignId { get; set; }
+
+        public Campaign Campaign { get; set; }
 
     }
 }

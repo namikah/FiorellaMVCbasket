@@ -85,8 +85,10 @@ namespace FirstFiorellaMVC.Controllers
                     Dimension = product.Dimension,
                     SKUCode = product.SKUCode,
                     Weight = product.Weight,
-                    Images = product.Images,
+                    Image = item.Image,
                     Count = item.Count,
+                    CampaignId = product.CampaignId,
+                    CategoryId = product.CategoryId,
                 });
             }
 
@@ -101,7 +103,9 @@ namespace FirstFiorellaMVC.Controllers
             if(id == null)
                 return BadRequest();
 
-            var product = await _appDbContext.Products.FindAsync(id);
+            var product = await _appDbContext.Products.Include(x=>x.Images).FirstOrDefaultAsync(x=>x.Id == id);
+            var image = await _appDbContext.ProductImages.FirstOrDefaultAsync(x => x.ProductId == id && x.IsMain == true);
+            
             if (product == null)
                 return NotFound();
 
@@ -127,7 +131,9 @@ namespace FirstFiorellaMVC.Controllers
                     Dimension = product.Dimension,
                     SKUCode = product.SKUCode,
                     Weight = product.Weight,
-                    Images = product.Images,
+                    Image = image.Name,
+                    CampaignId = product.CampaignId,
+                    CategoryId = product.CategoryId,
                 });
             }
             else

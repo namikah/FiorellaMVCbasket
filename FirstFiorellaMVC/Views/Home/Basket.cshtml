@@ -2,15 +2,21 @@
 @{
     ViewData["Title"] = "Basket";
     List<BasketViewModel> baskets = Model;
-
-    foreach (var item in baskets)
-    {
-        <h1>@item.Name</h1>
-        <h6>@item.Price</h6>
-        <h6>@item.Count</h6>
-        <h6>@item.Weight</h6>
-    }
 }
 
+ <div class="container">
+  <div class="row justify-content-center mt-5 mb-5">
+        @foreach (var item in baskets)
+    {
+        <div class="row col-12 justify-content-center">
+            <div class="col-1"><img class="img-fluid" src="~/img/@item.Image"><img/></div>
+            <div class="col-4"><h4>@item.Name</h4></div>
+            <div class="col-1"><h6>@item.Price</h6></div>
+            <div class="col-1"><h6>@item.Count</h6></div>
+            <div class="col-1"><h6>@item.Weight</h6></div>
+        </div>
+    }
+  </div>
+   </div>
 
 
