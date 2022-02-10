@@ -1,7 +1,17 @@
 $(document).ready(function () {
-    
+
+    $(document).on('click', '#increment-basket-item', function () {
+        $.ajax({
+            type: "GET",
+            url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
+            success: function (res) {
+                $("#basket-list").empthy();
+                $("#basket-list").append(res);
+            }
+        });
+    })
+
     $(document).on('click', '#add-to-cart', function () {
-        console.log(this)
         $.ajax({
             type: "GET",
             url: "/Home/AddBasket?id=" + $(this).attr('data-id'),

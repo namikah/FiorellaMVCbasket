@@ -168,7 +168,7 @@ namespace FirstFiorellaMVC.Controllers
 
             Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1)});
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Basket));
         }
     }
 }
