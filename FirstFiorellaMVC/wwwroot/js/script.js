@@ -44,7 +44,8 @@ $(document).ready(function () {
                     var productsCount = $("#productsCount").val();
 
                     if (skip >= productsCount) {
-                        $("#loadMore").remove();
+                        $(window).unbind('scroll');
+                       /* $("#loadMore").remove();*/
                     }
                 }
             });
