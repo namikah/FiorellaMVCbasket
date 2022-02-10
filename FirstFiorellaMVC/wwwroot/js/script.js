@@ -31,6 +31,13 @@ $(document).ready(function () {
                 $("#basket-list").append(res);
             }
         });
+        $.ajax({
+            type: "GET",
+            url: "/Home/TotalBasket",
+            success: function (res2) {
+                $("#basket-count").text(res2);
+            }
+        });
     })
 
     $(document).on('click', '#add-to-cart', function () {
@@ -38,8 +45,15 @@ $(document).ready(function () {
             type: "GET",
             url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
-               
                 $("#basket-list").append(res);
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/Home/TotalBasket",
+            success: function (res2) {
+                $("#basket-count").text(res2);
             }
         });
     })

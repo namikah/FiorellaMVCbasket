@@ -167,14 +167,6 @@ namespace FirstFiorellaMVC.Controllers
             var Basket = JsonConvert.SerializeObject(basketViewModels);
 
             Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1)});
-            double totalPrice = 0;
-
-            foreach (var item in basketViewModels)
-            {
-                totalPrice += item.Price * item.Count;
-            }
-
-            ViewData["TotalPrice"] = totalPrice;
 
             return PartialView("_BasketPartial", basketViewModels);
         }
@@ -260,6 +252,28 @@ namespace FirstFiorellaMVC.Controllers
             Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1) });
 
             return PartialView("_BasketPartial", basketViewModels);
+        }
+
+        public IActionResult TotalBasket()
+        {
+            List<BasketViewModel> basketViewModels;
+            var CookieBasket = Request.Cookies["Basket"];
+            if (string.IsNullOrEmpty(CookieBasket))
+            {
+                basketViewModels = new List<BasketViewModel>();
+            }
+            else
+            {
+                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+            }
+
+            double totalPrice = 0;
+            double totalCount = basketViewModels.Count;
+            foreach (var item in basketViewModels)
+            {
+                totalPrice += item.Price * item.Count;
+            }
+            return Json(totalCount);
         }
     }
 }
