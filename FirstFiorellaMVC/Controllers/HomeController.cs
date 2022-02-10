@@ -254,7 +254,7 @@ namespace FirstFiorellaMVC.Controllers
             return PartialView("_BasketPartial", basketViewModels);
         }
 
-        public IActionResult TotalBasket()
+        public IActionResult IncBasketCount()
         {
             List<BasketViewModel> basketViewModels;
             var CookieBasket = Request.Cookies["Basket"];
@@ -267,12 +267,24 @@ namespace FirstFiorellaMVC.Controllers
                 basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
             }
 
-            double totalPrice = 0;
-            double totalCount = basketViewModels.Count;
-            foreach (var item in basketViewModels)
+            double totalCount = basketViewModels.Count + 1;
+            return Json(totalCount);
+        }
+
+        public IActionResult DecBasketCount()
+        {
+            List<BasketViewModel> basketViewModels;
+            var CookieBasket = Request.Cookies["Basket"];
+            if (string.IsNullOrEmpty(CookieBasket))
             {
-                totalPrice += item.Price * item.Count;
+                basketViewModels = new List<BasketViewModel>();
             }
+            else
+            {
+                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+            }
+
+            double totalCount = basketViewModels.Count - 1;
             return Json(totalCount);
         }
     }

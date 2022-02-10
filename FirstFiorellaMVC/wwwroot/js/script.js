@@ -33,9 +33,9 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "GET",
-            url: "/Home/TotalBasket",
-            success: function (res2) {
-                $("#basket-count").text(res2);
+            url: "/Home/DecBasketCount",
+            success: function (res) {
+                $("#basket-count").text(res);
             }
         });
     })
@@ -51,9 +51,9 @@ $(document).ready(function () {
 
         $.ajax({
             type: "GET",
-            url: "/Home/TotalBasket",
-            success: function (res2) {
-                $("#basket-count").text(res2);
+            url: "/Home/IncBasketCount",
+            success: function (res) {
+                $("#basket-count").text(res);
             }
         });
     })
