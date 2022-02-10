@@ -5,7 +5,7 @@ $(document).ready(function () {
             type: "GET",
             url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
-                $("#basket-list").empthy();
+                $("#basket-list").empty();
                 $("#basket-list").append(res);
             }
         });
@@ -16,7 +16,7 @@ $(document).ready(function () {
             type: "GET",
             url: "/Home/DecrementBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
-                $("#basket-list").empthy();
+                $("#basket-list").empty();
                 $("#basket-list").append(res);
             }
         });
@@ -27,7 +27,7 @@ $(document).ready(function () {
             type: "GET",
             url: "/Home/RemoveBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
-                $("#basket-list").empthy();
+                $("#basket-list").empty();
                 $("#basket-list").append(res);
             }
         });
@@ -38,6 +38,7 @@ $(document).ready(function () {
             type: "GET",
             url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
+               
                 $("#basket-list").append(res);
             }
         });

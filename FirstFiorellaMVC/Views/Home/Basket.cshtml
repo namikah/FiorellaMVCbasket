@@ -3,6 +3,10 @@
     ViewData["Title"] = "Basket";
     List<BasketViewModel> baskets = Model;
     double total = 0;
+    foreach (var item in baskets)
+    {
+        total += item.Price * item.Count;
+    }
 }
 
  <div class="container">
@@ -21,7 +25,8 @@
                 </tr>
             </thead>
             <tbody id="basket-list">
-                @foreach (var item in baskets)
+               <partial name="_BasketPartial"/>
+               @* @foreach (var item in baskets)
                 {
                     total += item.Price * item.Count;
 
@@ -38,7 +43,7 @@
                         </th>
                         <th><span style="cursor:pointer; color:red; font-size:20px;" class="text-center"  id="remove-basket-item" data-id="@item.Id">x</span></th>
                     </tr>
-                }
+                }*@
             </tbody>
             <tfoot>
                 <tr>
