@@ -5,7 +5,7 @@
 }
 
  <div class="container">
-  <div class="row justify-content-center mt-5 mb-5">
+  <div class="row justify-content-center mt-5 mb-5" id="basket-list">
         @foreach (var item in baskets)
     {
         <div class="row col-12 justify-content-center">
@@ -16,6 +16,7 @@
             <div class="col-1"><h6>@item.Weight</h6></div>
         </div>
     }
+        <div class="col-12 text-right"><h6>TOTAL: @ViewData["TotalPrice"]</h6></div>
   </div>
    </div>
 

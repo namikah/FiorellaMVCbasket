@@ -103,6 +103,14 @@ namespace FirstFiorellaMVC.Controllers
             basket = JsonConvert.SerializeObject(newBaskets);
 
             Response.Cookies.Append("Basket", basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1) });
+            double TotalPrice = 0;
+            foreach (var item in newBaskets)
+            {
+                TotalPrice += item.Price * item.Count;
+            }
+
+            ViewData["TotalPrice"] = TotalPrice;
+
             return View(newBaskets);
         }
 
