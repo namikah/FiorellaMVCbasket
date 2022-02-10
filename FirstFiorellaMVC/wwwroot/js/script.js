@@ -22,6 +22,17 @@ $(document).ready(function () {
         });
     })
 
+    $(document).on('click', '#remove-basket-item', function () {
+        $.ajax({
+            type: "GET",
+            url: "/Home/RemoveBasket?id=" + $(this).attr('data-id'),
+            success: function (res) {
+                $("#basket-list").empthy();
+                $("#basket-list").append(res);
+            }
+        });
+    })
+
     $(document).on('click', '#add-to-cart', function () {
         $.ajax({
             type: "GET",
