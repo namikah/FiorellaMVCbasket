@@ -77,11 +77,19 @@ namespace FirstFiorellaMVC.Controllers
                 if (product == null)
                     continue;
 
+                var campaign = await _appDbContext.Campaigns.FirstOrDefaultAsync(x => x.Id == product.CampaignId);
+                double campaignPrice = product.Price;
+
+                if (campaign != null)
+                {
+                    campaignPrice = product.Price - product.Price * campaign.Discount / 100;
+                }
+
                 newBaskets.Add(new BasketViewModel
                 {
                     Id = product.Id,
                     Name = product.Name,
-                    Price = product.Price,
+                    Price = campaignPrice,
                     Dimension = product.Dimension,
                     SKUCode = product.SKUCode,
                     Weight = product.Weight,
@@ -103,11 +111,18 @@ namespace FirstFiorellaMVC.Controllers
             if(id == null)
                 return BadRequest();
 
-            var product = await _appDbContext.Products.Include(x=>x.Images).FirstOrDefaultAsync(x=>x.Id == id);
+            var product = await _appDbContext.Products.Include(x=>x.Images).Include(x=>x.Campaign).FirstOrDefaultAsync(x=>x.Id == id);
             var image = await _appDbContext.ProductImages.FirstOrDefaultAsync(x => x.ProductId == id && x.IsMain == true);
-            
+            var campaign = await _appDbContext.Campaigns.FirstOrDefaultAsync(x => x.Id == product.CampaignId);
+            double campaignPrice = product.Price;
+
             if (product == null)
                 return NotFound();
+
+            if (campaign != null)
+            {
+                campaignPrice = product.Price - product.Price*campaign.Discount/100;
+            }
 
             List<BasketViewModel> basketViewModels;
             var CookieBasket = Request.Cookies["Basket"];
@@ -127,7 +142,7 @@ namespace FirstFiorellaMVC.Controllers
                 {
                     Id = product.Id,
                     Name = product.Name,
-                    Price = product.Price,
+                    Price = campaignPrice,
                     Dimension = product.Dimension,
                     SKUCode = product.SKUCode,
                     Weight = product.Weight,
