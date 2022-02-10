@@ -11,6 +11,17 @@ $(document).ready(function () {
         });
     })
 
+    $(document).on('click', '#decrement-basket-item', function () {
+        $.ajax({
+            type: "GET",
+            url: "/Home/DecrementBasket?id=" + $(this).attr('data-id'),
+            success: function (res) {
+                $("#basket-list").empthy();
+                $("#basket-list").append(res);
+            }
+        });
+    })
+
     $(document).on('click', '#add-to-cart', function () {
         $.ajax({
             type: "GET",

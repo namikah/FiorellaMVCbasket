@@ -170,5 +170,43 @@ namespace FirstFiorellaMVC.Controllers
 
             return RedirectToAction(nameof(Basket));
         }
+
+        public async Task<IActionResult> DecrementBasket(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var product = await _appDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+                return NotFound();
+
+            List<BasketViewModel> basketViewModels;
+            var CookieBasket = Request.Cookies["Basket"];
+            if (string.IsNullOrEmpty(CookieBasket))
+            {
+                basketViewModels = new List<BasketViewModel>();
+            }
+            else
+            {
+                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+            }
+
+            var existBasketViewModel = basketViewModels.FirstOrDefault(x => x.Id == id);
+            if (existBasketViewModel == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                existBasketViewModel.Count--;
+            }
+
+            var Basket = JsonConvert.SerializeObject(basketViewModels);
+
+            Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1) });
+
+            return RedirectToAction(nameof(Basket));
+        }
     }
 }
