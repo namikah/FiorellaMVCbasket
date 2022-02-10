@@ -9,6 +9,13 @@ $(document).ready(function () {
                 $("#basket-list").append(res);
             }
         });
+        $.ajax({
+            type: "GET",
+            url: "/Home/TotalBasketPrice",
+            success: function (res) {
+                $("#basket-total-price").text("CART ($" + res + ")");
+            }
+        });
     })
 
     $(document).on('click', '#decrement-basket-item', function () {
@@ -18,6 +25,13 @@ $(document).ready(function () {
             success: function (res) {
                 $("#basket-list").empty();
                 $("#basket-list").append(res);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "/Home/TotalBasketPrice",
+            success: function (res) {
+                $("#basket-total-price").text("CART ($" + res + ")");
             }
         });
     })
@@ -54,6 +68,13 @@ $(document).ready(function () {
             url: "/Home/IncBasketCount",
             success: function (res) {
                 $("#basket-count").text(res);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "/Home/TotalBasketPrice",
+            success: function (res) {
+                $("#basket-total-price").text("CART ($" + res + ")");
             }
         });
     })

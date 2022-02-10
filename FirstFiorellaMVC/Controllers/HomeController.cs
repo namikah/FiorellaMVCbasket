@@ -199,13 +199,9 @@ namespace FirstFiorellaMVC.Controllers
             }
             else
             {
-                if(existBasketViewModel.Count <= 1)
+                if (existBasketViewModel.Count > 1)
                 {
-                    basketViewModels.Remove(existBasketViewModel);
-                }
-                else
-                {
-                existBasketViewModel.Count--;
+                    existBasketViewModel.Count--;
                 }
             }
 
@@ -286,6 +282,27 @@ namespace FirstFiorellaMVC.Controllers
 
             double totalCount = basketViewModels.Count - 1;
             return Json(totalCount);
+        }
+
+        public IActionResult TotalBasketPrice()
+        {
+            List<BasketViewModel> basketViewModels;
+            var CookieBasket = Request.Cookies["Basket"];
+            if (string.IsNullOrEmpty(CookieBasket))
+            {
+                basketViewModels = new List<BasketViewModel>();
+            }
+            else
+            {
+                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+            }
+
+            double totalPrice = 0;
+            foreach (var item in basketViewModels)
+            {
+                totalPrice += item.Price * item.Count;
+            }
+            return Json(totalPrice);
         }
     }
 }
