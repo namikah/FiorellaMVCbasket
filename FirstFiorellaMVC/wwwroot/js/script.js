@@ -11,6 +11,7 @@ $(document).ready(function () {
 
         $("#basket-total-price").text("CART ($" + totalPrice + ")");
         $("#basket-count").text(totalCount);
+        $("#basket-total-price-bottom").text("$" + totalPrice)
     }
 
     $(document).on('click', '#increment-basket-item', function () {
