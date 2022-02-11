@@ -1,9 +1,23 @@
 $(document).ready(function () {
 
+    function RefreshBasket(res) {
+
+        var totalPrice = 0;
+        var totalCount = res.length;
+
+        for (var i = 0; i < res.length; i++) {
+            totalPrice += res[i].price * res[i].count;
+        }
+
+        $("#basket-total-price").text("CART ($" + totalPrice + ")");
+        $("#basket-count").text(totalCount);
+    }
+
     $(document).on('click', '#increment-basket-item', function () {
         $.ajax({
-            type: "GET",
-            url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
+            type: "POST",
+            url: "/Home/IncDecBasket",
+            data: { id: $(this).attr('data-id'), operation: 'increment' },
             success: function (res) {
                 $("#basket-list").empty();
                 $("#basket-list").append(res);
@@ -11,17 +25,16 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "GET",
-            url: "/Home/TotalBasketPrice",
-            success: function (res) {
-                $("#basket-total-price").text("CART ($" + res + ")");
-            }
+            url: "/Home/RefreshBasket",
+            success: (res) => RefreshBasket(res)
         });
     })
 
     $(document).on('click', '#decrement-basket-item', function () {
         $.ajax({
-            type: "GET",
-            url: "/Home/DecrementBasket?id=" + $(this).attr('data-id'),
+            type: "POST",
+            url: "/Home/IncDecBasket",
+            data: { id: $(this).attr('data-id'), operation: 'decrement' },
             success: function (res) {
                 $("#basket-list").empty();
                 $("#basket-list").append(res);
@@ -29,16 +42,14 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "GET",
-            url: "/Home/TotalBasketPrice",
-            success: function (res) {
-                $("#basket-total-price").text("CART ($" + res + ")");
-            }
+            url: "/Home/RefreshBasket",
+            success: (res) => RefreshBasket(res)
         });
     })
 
     $(document).on('click', '#remove-basket-item', function () {
         $.ajax({
-            type: "GET",
+            type: "DELETE",
             url: "/Home/RemoveBasket?id=" + $(this).attr('data-id'),
             success: function (res) {
                 $("#basket-list").empty();
@@ -47,34 +58,26 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "GET",
-            url: "/Home/DecBasketCount",
-            success: function (res) {
-                $("#basket-count").text(res);
-            }
+            url: "/Home/RefreshBasket",
+            success: (res) => RefreshBasket(res)
         });
     })
 
     $(document).on('click', '#add-to-cart', function () {
         $.ajax({
-            type: "GET",
-            url: "/Home/AddBasket?id=" + $(this).attr('data-id'),
+            type: "POST",
+            url: "/Home/Basket?id=" + $(this).attr('data-id'),
             success: function (res) {
-                $("#basket-list").append(res);
-            }
-        });
 
-        $.ajax({
-            type: "GET",
-            url: "/Home/IncBasketCount",
-            success: function (res) {
-                $("#basket-count").text(res);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/Home/TotalBasketPrice",
-            success: function (res) {
-                $("#basket-total-price").text("CART ($" + res + ")");
+                var totalPrice = 0;
+                var totalCount = res.length;
+
+                for (var i = 0; i < res.length; i++) {
+                    totalPrice += res[i].price * res[i].count;
+                }
+
+                $("#basket-total-price").text("CART ($" + totalPrice + ")");
+                $("#basket-count").text(totalCount);
             }
         });
     })

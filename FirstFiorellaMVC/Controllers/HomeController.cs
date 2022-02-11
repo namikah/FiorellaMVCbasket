@@ -114,7 +114,8 @@ namespace FirstFiorellaMVC.Controllers
             return View(newBaskets);
         }
 
-        public async Task<IActionResult> AddBasket(int? id)
+        [HttpPost]
+        public async Task<IActionResult> Basket(int? id)
         {
             if(id == null)
                 return BadRequest();
@@ -168,50 +169,11 @@ namespace FirstFiorellaMVC.Controllers
 
             Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1)});
 
-            return PartialView("_BasketPartial", basketViewModels);
+            //return PartialView("_BasketPartial", basketViewModels);
+            return Json(basketViewModels);
         }
 
-        public async Task<IActionResult> DecrementBasket(int? id)
-        {
-            if (id == null)
-                return BadRequest();
-
-            var product = await _appDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (product == null)
-                return NotFound();
-
-            List<BasketViewModel> basketViewModels;
-            var CookieBasket = Request.Cookies["Basket"];
-            if (string.IsNullOrEmpty(CookieBasket))
-            {
-                basketViewModels = new List<BasketViewModel>();
-            }
-            else
-            {
-                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
-            }
-
-            var existBasketViewModel = basketViewModels.FirstOrDefault(x => x.Id == id);
-            if (existBasketViewModel == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                if (existBasketViewModel.Count > 1)
-                {
-                    existBasketViewModel.Count--;
-                }
-            }
-
-            var Basket = JsonConvert.SerializeObject(basketViewModels);
-
-            Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1) });
-
-            return PartialView("_BasketPartial", basketViewModels);
-        }
-
+        [HttpDelete]
         public async Task<IActionResult> RemoveBasket(int? id)
         {
             if (id == null)
@@ -250,25 +212,30 @@ namespace FirstFiorellaMVC.Controllers
             return PartialView("_BasketPartial", basketViewModels);
         }
 
-        public IActionResult IncBasketCount()
+        public IActionResult RefreshBasket()
         {
-            List<BasketViewModel> basketViewModels;
             var CookieBasket = Request.Cookies["Basket"];
+
             if (string.IsNullOrEmpty(CookieBasket))
             {
-                basketViewModels = new List<BasketViewModel>();
+                return Json(new List<BasketViewModel>());
             }
             else
             {
-                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+                return Json(JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket));
             }
-
-            double totalCount = basketViewModels.Count + 1;
-            return Json(totalCount);
         }
 
-        public IActionResult DecBasketCount()
+        public async Task<IActionResult> IncDecBasket(int? id, string operation)
         {
+            if (id == null)
+                return BadRequest();
+
+            var product = await _appDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+                return NotFound();
+
             List<BasketViewModel> basketViewModels;
             var CookieBasket = Request.Cookies["Basket"];
             if (string.IsNullOrEmpty(CookieBasket))
@@ -280,29 +247,31 @@ namespace FirstFiorellaMVC.Controllers
                 basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
             }
 
-            double totalCount = basketViewModels.Count - 1;
-            return Json(totalCount);
-        }
-
-        public IActionResult TotalBasketPrice()
-        {
-            List<BasketViewModel> basketViewModels;
-            var CookieBasket = Request.Cookies["Basket"];
-            if (string.IsNullOrEmpty(CookieBasket))
+            var existBasketViewModel = basketViewModels.FirstOrDefault(x => x.Id == id);
+            if (existBasketViewModel == null)
             {
-                basketViewModels = new List<BasketViewModel>();
+                return NotFound();
             }
             else
             {
-                basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(CookieBasket);
+                if (operation == "decrement")
+                {
+                    if (existBasketViewModel.Count > 1)
+                    {
+                        existBasketViewModel.Count--;
+                    }
+                }
+                else
+                {
+                    existBasketViewModel.Count++;
+                }
             }
 
-            double totalPrice = 0;
-            foreach (var item in basketViewModels)
-            {
-                totalPrice += item.Price * item.Count;
-            }
-            return Json(totalPrice);
+            var Basket = JsonConvert.SerializeObject(basketViewModels);
+
+            Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1) });
+
+            return PartialView("_BasketPartial", basketViewModels);
         }
     }
 }
