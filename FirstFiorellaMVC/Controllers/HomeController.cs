@@ -147,7 +147,7 @@ namespace FirstFiorellaMVC.Controllers
             var existBasketViewModel = basketViewModels.FirstOrDefault(x => x.Id == id);
             if(existBasketViewModel == null)
             {
-                basketViewModels.Add(new BasketViewModel()
+                basketViewModels?.Add(new BasketViewModel()
                 {
                     Id = product.Id,
                     Name = product.Name,
@@ -155,7 +155,7 @@ namespace FirstFiorellaMVC.Controllers
                     Dimension = product.Dimension,
                     SKUCode = product.SKUCode,
                     Weight = product.Weight,
-                    Image = image.Name,
+                    Image = image?.Name,
                     CampaignId = product.CampaignId,
                     CategoryId = product.CategoryId,
                 });
@@ -167,7 +167,7 @@ namespace FirstFiorellaMVC.Controllers
 
             var Basket = JsonConvert.SerializeObject(basketViewModels);
 
-            Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(1)});
+            Response.Cookies.Append("Basket", Basket, new CookieOptions { Expires = System.DateTimeOffset.Now.AddDays(5)});
 
             //return PartialView("_BasketPartial", basketViewModels);
             return Json(basketViewModels);

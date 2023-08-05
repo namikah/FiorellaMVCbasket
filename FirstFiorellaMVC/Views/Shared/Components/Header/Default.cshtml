@@ -7,7 +7,7 @@
                     <nav
                         class="navbar navbar-expand-lg d-flex d-lg-block justify-content-between d-xl-flex navbar-light py-3 py-lg-0">
                         <a class="navbar-brand" asp-controller="home" asp-action="index">
-                            <img src="~/img/@Model.Logo" alt="" id="logo">
+                            <img src="~/img/@Model?.Logo" alt="" id="logo">
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -32,53 +32,6 @@
                                         <li class=""><a class="px-1" href="">Page 2</a></li>
                                         <li class=""><a class="px-1" href="">Page 3</a></li>
                                     </ul>
-                                </li>
-                                <li class="nav-item shop-li">
-                                    <a class="nav-link" href="#">Shop</a>
-                                    <div class="container">
-                                        <div class="row shop py-5">
-                                            <div class="col-lg-3">
-                                                <div class="item px-4">
-                                                    <h5>Product Types</h5>
-                                                    <ul class="list-unstyled py-3">
-                                                        <li class=""><a class="px-3" asp-controller="Product" asp-action="Index">Product Types 1</a></li>
-                                                        <li class=""><a class="px-3" href="">Product Types 2</a></li>
-                                                        <li class=""><a class="px-3" href="">Product Types 3</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="item px-4">
-                                                    <h5>Shop Pages</h5>
-                                                    <ul class="list-unstyled py-3">
-                                                        <li class=""><a class="px-3" href="">Shop Pages 1</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Pages 2</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Pages 3</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="item px-4">
-                                                    <h5>Shop Types</h5>
-                                                    <ul class="list-unstyled py-3">
-                                                        <li class=""><a class="px-3" href="">Shop Types 1</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Types 2</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Types 3</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="item px-4">
-                                                    <h5>Shop Layouts</h5>
-                                                    <ul class="list-unstyled py-3">
-                                                        <li class=""><a class="px-3" href="">Shop Layouts 1</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Layouts 2</a></li>
-                                                        <li class=""><a class="px-3" href="">Shop Layouts 3</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Portfolio</a>
@@ -128,7 +81,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item my-auto search">
+                                <li class="nav-item my-auto search m-0">
                                     <i class="fas fa-search" id="search"></i>
                                     <ul class="list-unstyled py-3" id="searchedProducts">
                                         <li class="d-flex px-3">
@@ -138,14 +91,14 @@
 
                                     </ul>
                                 </li>
-                                <li class="nav-item my-auto shop-cart">
+                                <li class="nav-item my-auto shop-cart m-0">
                                     <a asp-controller="home" asp-action="basket">
                                         <i class="fas fa-shopping-bag"></i>
                                     </a>
-                                    <sup class="rounded-circle" id="basket-count">@ViewData["BasketCount"]</sup>
+                                    <sup class="rounded-circle" id="basket-count" style="position:relative;">@ViewData["BasketCount"]</sup>
                                     <span style="font-size:12px;" id="basket-total-price">CART ($@ViewData["BasketTotalPrice"])</span>
-                                    <ul class="list-unstyled py-3">
-                                        <li class="">No products in the cart.</li>
+                                    <ul class="list-unstyled py-3 m-0" style="position:absolute;top:100%;left:0;">
+                                    @await Component.InvokeAsync("Basket")
                                     </ul>
                                 </li>
                             </ul>

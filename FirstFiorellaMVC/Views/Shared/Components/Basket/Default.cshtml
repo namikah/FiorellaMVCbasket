@@ -1,0 +1,27 @@
+﻿@{
+    List<BasketViewModel> selectedProducts = Model;
+    double total = 0;
+}
+
+@if (Model.Count == null)
+{
+    <li class="">No products in the cart.</li>
+}
+@foreach (var item in Model)
+{
+    total += @item?.Price * item?.Count;
+    <li class="img">
+        <a asp-controller="home" asp-action="basket" asp-route-id="@item?.Id">
+            <img src="~/img/@item?.Image" class="img-fluid" alt="product">
+        </a>
+    </li>
+    <li class="title mt-3">
+        <h6>@item?.Name</h6>
+    </li>
+    <li class="price">
+        <span class="text-black-50">@item?.Count x @item?.Price$</span>
+    </li>
+}
+<li class="total-price">
+    <span>Total: @total$</span>
+</li>
